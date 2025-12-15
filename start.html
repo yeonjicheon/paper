@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vimeo 배경 + 8초 후 이미지 표시</title>
+    <style>
+        /* ... (CSS 코드는 동일하게 유지) ... */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; 
+            font-family: sans-serif;
+            color: white; 
+        }
+
+        .video-background {
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -100;
+            overflow: hidden; 
+            pointer-events: none;
+        }
+
+        .video-background iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0);
+            z-index: -90;
+            transition: background-color 1s ease;
+        }
+
+        .content {
+            position: relative;
+            z-index: 40;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        
+        .drawing-link {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 1s ease, transform 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+            
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw; 
+            height: 100vh;
+        }
+
+        .drawing-link.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .drawing-link:hover {
+            opacity: 1; 
+            transform: scale(1.03);
+        }
+
+        .drawing-link img {
+            width: 130vw; 
+            height: 130vh; 
+            object-fit: cover; 
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="video-background">
+        <iframe 
+            src="https://player.vimeo.com/video/1140252867?autoplay=1&loop=1&background=1&muted=1" 
+            frameborder="0" 
+            allow="autoplay; fullscreen; picture-in-picture" 
+            allowfullscreen>
+        </iframe>
+    </div>
+    
+    <div id="overlay" class="video-overlay"></div>
+
+    <div class="content">
+        <a href="./index.html" id="drawingLink" class="drawing-link">
+            <img src="https://i.imgur.com/BU8KsD6.png" alt="클릭하여 이동">
+        </a>
+    </div>
+
+<script>
+    function showContent() {
+        const drawingLink = document.getElementById('drawingLink');
+        const overlay = document.getElementById('overlay');
+        
+        drawingLink.classList.add('visible');
+        // overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.4)'; 
+    }
+
+    // 8000밀리초 (8초) 후에 showContent 함수를 실행
+    setTimeout(showContent, 8000); 
+</script>
+</body>
+</html>
